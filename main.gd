@@ -24,7 +24,7 @@ func _ready():
 	_MainWindow.size = _MainWindow.min_size
 	#Places the character in the middle of the screen and on top of the taskbar
 	@warning_ignore("integer_division")
-	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), taskbar_pos)
+	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), DisplayServer.screen_get_size().y/2)
 
 func _process(delta):
 	if _MainWindow.position.y < taskbar_pos and selected == false:

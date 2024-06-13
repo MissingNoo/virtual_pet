@@ -13,7 +13,7 @@ enum STATE{
 	IDLE,
 	#LOOKAROUND,
 	WALK,
-	#SLEEP,
+	SLEEP,
 }
 
 func _ready():
@@ -21,7 +21,10 @@ func _ready():
 	sprite.play("idle")
 	timer.start()
 	sprite.offset.x = 0
-	sprite.offset.y = -21
+	sprite.offset.y = -22
+	sprite.scale.y = 3
+	sprite.scale.x = 3
+	
 
 func _on_timer_timeout():
 	if pet_state == STATE.WALK:
@@ -33,21 +36,23 @@ func _on_timer_timeout():
 		STATE.IDLE :
 			timer.set_wait_time(randi_range(10, 20))
 			sprite.play("idle")
-			sprite.offset.y = -21
+			sprite.offset.y = -22
 		#STATE.LOOKAROUND :
 			#timer.set_wait_time(randi_range(10, 20))
 			#sprite.play("look_around")
 		STATE.WALK :
 			timer.set_wait_time(randi_range(5, 10))
 			sprite.play("walk")
-			sprite.offset.y = -30
+			sprite.offset.y = -22
 			sprite.offset.x = -10
-		#STATE.SLEEP :
-			#timer.set_wait_time(randi_range(10, 30))
-			#sprite.play("sleep")
+		STATE.SLEEP :
+			timer.set_wait_time(randi_range(10, 30))
+			sprite.offset.y = -22
+			sprite.offset.x = -10
+			sprite.play("sleep")
 	timer.start()
 
 func change_state():
-	pet_state = randi_range(0,1)
+	pet_state = randi_range(0,2)
 	if pet_state == STATE.WALK:
 		walking.emit()
