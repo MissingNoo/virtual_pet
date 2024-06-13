@@ -8,6 +8,7 @@ script = ExtResource("1_5e0xm")
 
 [node name="Character" parent="." instance=ExtResource("2_n7kpb")]
 position = Vector2(0, 40)
+scale = Vector2(1, 1)
 
 [connection signal="finished_walking" from="Character" to="." method="_on_character_finished_walking"]
 [connection signal="walking" from="Character" to="." method="_on_character_walking"]

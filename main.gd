@@ -4,7 +4,7 @@ extends Node2D
 @onready var char_sprite: AnimatedSprite2D = $Character/AnimatedSprite2D
 @onready var emitter: CPUParticles2D = $Character/CPUParticles2D
 
-var player_size: Vector2i = Vector2i(100,104)
+var player_size: Vector2i = Vector2i(112,100)
 #The offset between the mouse and the character
 var mouse_offset: Vector2 = Vector2.ZERO
 var selected: bool = false

@@ -11,15 +11,17 @@ signal finished_walking
 
 enum STATE{
 	IDLE,
-	LOOKAROUND,
+	#LOOKAROUND,
 	WALK,
-	SLEEP,
+	#SLEEP,
 }
 
 func _ready():
-	pet_state = STATE.LOOKAROUND
-	sprite.play("look_around")
+	pet_state = STATE.IDLE
+	sprite.play("idle")
 	timer.start()
+	sprite.offset.x = 0
+	sprite.offset.y = -21
 
 func _on_timer_timeout():
 	if pet_state == STATE.WALK:
@@ -29,20 +31,23 @@ func _on_timer_timeout():
 	#Timer can change according to state and is random
 	match pet_state:
 		STATE.IDLE :
-			timer.set_wait_time(randi_range(10, 200))
+			timer.set_wait_time(randi_range(10, 20))
 			sprite.play("idle")
-		STATE.LOOKAROUND :
-			timer.set_wait_time(randi_range(10, 200))
-			sprite.play("look_around")
+			sprite.offset.y = -21
+		#STATE.LOOKAROUND :
+			#timer.set_wait_time(randi_range(10, 20))
+			#sprite.play("look_around")
 		STATE.WALK :
-			timer.set_wait_time(randi_range(5, 60))
+			timer.set_wait_time(randi_range(5, 10))
 			sprite.play("walk")
-		STATE.SLEEP :
-			timer.set_wait_time(randi_range(300, 1000))
-			sprite.play("sleep")
+			sprite.offset.y = -30
+			sprite.offset.x = -10
+		#STATE.SLEEP :
+			#timer.set_wait_time(randi_range(10, 30))
+			#sprite.play("sleep")
 	timer.start()
 
 func change_state():
-	pet_state = randi_range(0,3)
+	pet_state = randi_range(0,1)
 	if pet_state == STATE.WALK:
 		walking.emit()
