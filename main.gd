@@ -5,6 +5,7 @@ extends Node2D
 @onready var emitter: CPUParticles2D = $Character/CPUParticles2D
 
 var player_size: Vector2i = Vector2i(112,100)
+var gravity: int = 10
 #The offset between the mouse and the character
 var mouse_offset: Vector2 = Vector2.ZERO
 var selected: bool = false
@@ -22,9 +23,14 @@ func _ready():
 	_MainWindow.min_size = player_size
 	_MainWindow.size = _MainWindow.min_size
 	#Places the character in the middle of the screen and on top of the taskbar
+	@warning_ignore("integer_division")
 	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), taskbar_pos)
 
 func _process(delta):
+	if _MainWindow.position.y < taskbar_pos and selected == false:
+		_MainWindow.position.y += gravity
+	if _MainWindow.position.y > taskbar_pos:
+		_MainWindow.position.y = taskbar_pos
 	if selected:
 		follow_mouse()
 	if is_walking:
@@ -36,9 +42,11 @@ func _process(delta):
 
 func follow_mouse():
 	#Follows mouse cursor but clamps it on the taskbar
-	_MainWindow.position = Vector2i(clamp_on_screen_width((get_global_mouse_position().x 
-		 + mouse_offset.x),
-		 player_size.x), taskbar_pos) 
+	@warning_ignore("narrowing_conversion")
+	_MainWindow.position = Vector2i(get_global_mouse_position().x
+		 + mouse_offset.x, 
+		get_global_mouse_position().y
+		 + mouse_offset.y) 
 
 func move_pet():
 	#On right click and hold it will follow the pet and when released
@@ -47,6 +55,9 @@ func move_pet():
 		selected = true
 		mouse_offset = _MainWindow.position - Vector2i(get_global_mouse_position()) 
 	if Input.is_action_just_released("move"):
+		#var scn = load("res://main.tscn")
+		#var inst = scn.instantiate()
+		#add_child(inst)
 		selected = false
 
 func clamp_on_screen_width(pos, player_width):
