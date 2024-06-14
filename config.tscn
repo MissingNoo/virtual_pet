@@ -1,5 +1,48 @@
-[gd_scene format=3 uid="uid://dn6ry8t3rkrac"]
+[gd_scene load_steps=3 format=3 uid="uid://dn6ry8t3rkrac"]
+
+[sub_resource type="GDScript" id="GDScript_htnxb"]
+script/source = "extends Window
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_rmdx6"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+func _on_pressed():
+	get_tree().quit()
+"
 
 [node name="Config" type="Node2D"]
 
 [node name="Window" type="Window" parent="."]
+initial_position = 1
+size = Vector2i(200, 100)
+script = SubResource("GDScript_htnxb")
+
+[node name="Button" type="Button" parent="Window"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Exit"
+script = SubResource("GDScript_rmdx6")
+
+[connection signal="pressed" from="Window/Button" to="Window/Button" method="_on_pressed"]

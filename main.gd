@@ -55,9 +55,9 @@ func move_pet():
 		selected = true
 		mouse_offset = _MainWindow.position - Vector2i(get_global_mouse_position()) 
 	if Input.is_action_just_released("move"):
-		#var scn = load("res://main.tscn")
-		#var inst = scn.instantiate()
-		#add_child(inst)
+		var scn = load("res://config.tscn")
+		var inst = scn.instantiate()
+		add_child(inst)
 		selected = false
 
 func clamp_on_screen_width(pos, player_width):
