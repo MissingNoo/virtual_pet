@@ -1,10 +1,12 @@
 extends Node2D
 
 @onready var _MainWindow: Window = get_window()
+@onready var char_info: Array = $Character.character_info
+@onready var selected_character: int = $Character.selected_character
 @onready var char_sprite: AnimatedSprite2D = $Character/AnimatedSprite2D
 @onready var emitter: CPUParticles2D = $Character/CPUParticles2D
 
-var player_size: Vector2i = Vector2i(112,100)
+var player_size: Vector2i = Vector2i(32*3,32*3)
 var gravity: int = 10
 #The offset between the mouse and the character
 var mouse_offset: Vector2 = Vector2.ZERO
@@ -19,6 +21,7 @@ var walk_direction: int = 1
 const WALK_SPEED = 150
 
 func _ready():
+	get_window().mouse_passthrough_polygon = $Character/Polygon2D.polygon
 	#Change the size of the window
 	_MainWindow.min_size = player_size
 	_MainWindow.size = _MainWindow.min_size
@@ -55,9 +58,7 @@ func move_pet():
 		selected = true
 		mouse_offset = _MainWindow.position - Vector2i(get_global_mouse_position()) 
 	if Input.is_action_just_released("move"):
-		var scn = load("res://config.tscn")
-		var inst = scn.instantiate()
-		add_child(inst)
+		$Config/Window.visible = !$Config/Window.visible
 		selected = false
 
 func clamp_on_screen_width(pos, player_width):
@@ -77,10 +78,10 @@ func walk(delta):
 func choose_direction():
 	if (randi_range(1,2) == 1):
 		walk_direction = 1
-		char_sprite.flip_h = false
+		char_sprite.flip_h = char_info[selected_character][4]
 	else:
 		walk_direction = -1
-		char_sprite.flip_h = true
+		char_sprite.flip_h = !char_info[selected_character][4]
 
 func _on_character_walking():
 	is_walking = true
@@ -88,3 +89,23 @@ func _on_character_walking():
 
 func _on_character_finished_walking():
 	is_walking = false
+
+
+func _on_character_change_character():
+	var character = get_node("Character")
+	var info = character.character_info[character.selected_character]
+	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
+	char_sprite.flip_h = info[4]
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	_ready()
+
+
+func _on_config_change_character(char):
+	var character = get_node("Character")
+	var info = character.character_info[char]
+	character.ch_character(char)
+	is_walking = false
+	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
+	char_sprite.flip_h = info[4]
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	_ready()
