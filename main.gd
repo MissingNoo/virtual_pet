@@ -12,7 +12,8 @@ var gravity: int = 10
 var mouse_offset: Vector2 = Vector2.ZERO
 var selected: bool = false
 #This will be the position of the pet above the taskbar
-var taskbar_pos: int = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+var waybaroffset = 36
+var taskbar_pos: int = (DisplayServer.screen_get_usable_rect().size.y - player_size.y - waybaroffset)
 var screen_width: int = DisplayServer.screen_get_usable_rect().size.x
 #If true the character will move
 var is_walking: bool = false
@@ -62,7 +63,12 @@ func move_pet():
 		selected = false
 
 func clamp_on_screen_width(pos, player_width):
-	return clampi(pos, 0, screen_width - player_width)
+	if pos > screen_width:
+		waybaroffset = 0
+	else:
+		waybaroffset = 36
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y - waybaroffset)
+	return clampi(pos, 0, (screen_width * 2) - player_width)
 
 func walk(delta):
 	#Moves the pet
@@ -96,7 +102,7 @@ func _on_character_change_character():
 	var info = character.character_info[character.selected_character]
 	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
 	char_sprite.flip_h = info[4]
-	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y - waybaroffset)
 	_ready()
 
 
@@ -107,5 +113,5 @@ func _on_config_change_character(char):
 	is_walking = false
 	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
 	char_sprite.flip_h = info[4]
-	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y - waybaroffset)
 	_ready()
