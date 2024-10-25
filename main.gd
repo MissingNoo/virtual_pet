@@ -12,8 +12,12 @@ var gravity: int = 10
 var mouse_offset: Vector2 = Vector2.ZERO
 var selected: bool = false
 #This will be the position of the pet above the taskbar
-var taskbar_pos: int = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+var original_taskbar_offset: int = 38
+var taskbar_offset: int = 38
+var taskbar_pos: int = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 var screen_width: int = DisplayServer.screen_get_usable_rect().size.x
+var first_width: int = DisplayServer.screen_get_usable_rect().size.x
+var dualscreen: bool = true
 #If true the character will move
 var is_walking: bool = false
 var walk_direction: int = 1
@@ -21,6 +25,8 @@ var walk_direction: int = 1
 const WALK_SPEED = 150
 
 func _ready():
+	if dualscreen:
+		screen_width = DisplayServer.screen_get_usable_rect().size.x * 2
 	get_window().mouse_passthrough_polygon = $Character/Polygon2D.polygon
 	#Change the size of the window
 	_MainWindow.min_size = player_size
@@ -30,6 +36,11 @@ func _ready():
 	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), DisplayServer.screen_get_size().y/2)
 
 func _process(delta):
+	if _MainWindow.position.x > first_width + (player_size.y / 2):
+		taskbar_offset = 0
+	else:
+		taskbar_offset = original_taskbar_offset
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 	if _MainWindow.position.y < taskbar_pos and selected == false:
 		_MainWindow.position.y += gravity
 	if _MainWindow.position.y > taskbar_pos:
@@ -96,16 +107,16 @@ func _on_character_change_character():
 	var info = character.character_info[character.selected_character]
 	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
 	char_sprite.flip_h = info[4]
-	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 	_ready()
 
 
-func _on_config_change_character(char):
+func _on_config_change_character(chara):
 	var character = get_node("Character")
-	var info = character.character_info[char]
-	character.ch_character(char)
+	var info = character.character_info[chara]
+	character.ch_character(chara)
 	is_walking = false
 	player_size = Vector2i(info[1]*info[3],info[2]*info[3])
 	char_sprite.flip_h = info[4]
-	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y)
+	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 	_ready()

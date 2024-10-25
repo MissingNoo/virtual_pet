@@ -8,6 +8,8 @@ enum characters {
 	IRyS,
 	Kronii,
 	Sana,
+	Lumin,
+	Lumin2,
 	length
 }
 # Called when the node enters the scene tree for the first time.
@@ -59,4 +61,14 @@ func _on_sana_pressed():
 
 func _on_ywi_pressed():
 	change_character.emit(characters.Ywi)
+	$Window.visible = false
+
+
+func _on_Lumin_pressed() -> void:
+	change_character.emit(characters.Lumin)
+	$Window.visible = false
+
+
+func lumin2() -> void:
+	change_character.emit(characters.Lumin2)
 	$Window.visible = false

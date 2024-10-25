@@ -79,6 +79,22 @@ offset_right = 141.0
 offset_bottom = 61.0
 text = "Ywi"
 
+[node name="Button2" type="Button" parent="Window/Control"]
+layout_mode = 0
+offset_left = 125.0
+offset_right = 182.0
+offset_bottom = 31.0
+text = "Lumin"
+
+[node name="Button3" type="Button" parent="Window/Control"]
+layout_mode = 0
+offset_left = 142.0
+offset_top = 30.0
+offset_right = 199.0
+offset_bottom = 61.0
+text = "Lumin2
+"
+
 [connection signal="pressed" from="Window/Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Window/Control/Bae" to="." method="_on_bae_pressed"]
 [connection signal="pressed" from="Window/Control/Fauna" to="." method="_on_fauna_pressed"]
@@ -87,3 +103,5 @@ text = "Ywi"
 [connection signal="pressed" from="Window/Control/Kronii" to="." method="_on_kronii_pressed"]
 [connection signal="pressed" from="Window/Control/Sana" to="." method="_on_sana_pressed"]
 [connection signal="pressed" from="Window/Control/Ywi" to="." method="_on_ywi_pressed"]
+[connection signal="pressed" from="Window/Control/Button2" to="." method="_on_Lumin_pressed"]
+[connection signal="pressed" from="Window/Control/Button3" to="." method="lumin2"]

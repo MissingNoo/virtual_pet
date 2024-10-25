@@ -10,6 +10,7 @@ enum characters {
 	IRyS,
 	Kronii,
 	Sana,
+	Lumin,
 	length
 }
 var character_info = [
@@ -20,6 +21,8 @@ var character_info = [
 	["IRyS", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
 	["Kronii", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
 	["Sana", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
+	["Lumin", 30, 30, 3, false, [[0, 0], [128, 0], [0, 128], [128, 128]]],
+	["Lumin2", 166, 318, 0.5, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
 ]
 var selected_character = 0
 var pet_state : int = STATE.IDLE
@@ -37,19 +40,17 @@ enum STATE{
 
 func _ready():
 	var pos = character_info[selected_character][5]
-	var scale = character_info[selected_character][3]
-	var centerw = character_info[selected_character][1] / 2
-	var centerh = character_info[selected_character][2] / 2
-	$Polygon2D.polygon[0][0] = pos[0][0] * scale
-	$Polygon2D.polygon[0][1] = pos[0][1] * scale
-	$Polygon2D.polygon[1][0] = pos[1][0] * scale
-	$Polygon2D.polygon[1][1] = pos[1][1] * scale
-	$Polygon2D.polygon[2][0] = pos[3][0] * scale
-	$Polygon2D.polygon[2][1] = pos[3][1] * scale
-	$Polygon2D.polygon[3][0] = pos[2][0] * scale
-	$Polygon2D.polygon[3][1] = pos[2][1] * scale
-	$CPUParticles2D.position.x = (pos[0][0] * scale) + 16
-	$CPUParticles2D.position.y = (pos[0][1] * scale) + 16
+	var cscale = character_info[selected_character][3]
+	$Polygon2D.polygon[0][0] = pos[0][0] * cscale
+	$Polygon2D.polygon[0][1] = pos[0][1] * cscale
+	$Polygon2D.polygon[1][0] = pos[1][0] * cscale
+	$Polygon2D.polygon[1][1] = pos[1][1] * cscale
+	$Polygon2D.polygon[2][0] = pos[3][0] * cscale
+	$Polygon2D.polygon[2][1] = pos[3][1] * cscale
+	$Polygon2D.polygon[3][0] = pos[2][0] * cscale
+	$Polygon2D.polygon[3][1] = pos[2][1] * cscale
+	$CPUParticles2D.position.x = (pos[0][0] * cscale) + 16
+	$CPUParticles2D.position.y = (pos[0][1] * cscale) + 16
 	get_window().mouse_passthrough_polygon = $Polygon2D.polygon
 	pet_state = STATE.IDLE
 	var spr = get_node("AnimatedSprite2D")
@@ -85,8 +86,8 @@ func change_state():
 	if pet_state == STATE.WALK:
 		walking.emit()
 
-func ch_character(char):
-	selected_character = char
+func ch_character(chara):
+	selected_character = chara
 	_ready()
 	emit_signal("change_character")
 
