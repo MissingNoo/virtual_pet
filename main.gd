@@ -12,12 +12,12 @@ var gravity: int = 10
 var mouse_offset: Vector2 = Vector2.ZERO
 var selected: bool = false
 #This will be the position of the pet above the taskbar
-var original_taskbar_offset: int = 38
-var taskbar_offset: int = 38
+var original_taskbar_offset: int = 0
+var taskbar_offset: int = 0
 var taskbar_pos: int = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 var screen_width: int = DisplayServer.screen_get_usable_rect().size.x
 var first_width: int = DisplayServer.screen_get_usable_rect().size.x
-var dualscreen: bool = true
+var dualscreen: bool = false;
 #If true the character will move
 var is_walking: bool = false
 var walk_direction: int = 1

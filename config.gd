@@ -10,6 +10,7 @@ enum characters {
 	Sana,
 	Lumin,
 	Lumin2,
+	Nebulamemi,
 	length
 }
 # Called when the node enters the scene tree for the first time.
@@ -71,4 +72,9 @@ func _on_Lumin_pressed() -> void:
 
 func lumin2() -> void:
 	change_character.emit(characters.Lumin2)
+	$Window.visible = false
+
+
+func _on_nebulamemi_pressed() -> void:
+	change_character.emit(characters.Nebulamemi)
 	$Window.visible = false

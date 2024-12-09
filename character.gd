@@ -11,6 +11,8 @@ enum characters {
 	Kronii,
 	Sana,
 	Lumin,
+	Lumin2,
+	Nebulamemi,
 	length
 }
 var character_info = [
@@ -23,6 +25,7 @@ var character_info = [
 	["Sana", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
 	["Lumin", 30, 30, 3, false, [[0, 0], [128, 0], [0, 128], [128, 128]]],
 	["Lumin2", 166, 318, 0.5, true, [[0, 0], [128, 0], [0, 128], [128, 128]]],
+	["Ymm", 295, 286, 0.50, true, [[0, 81], [255, 80], [0, 285], [255, 285]]]
 ]
 var selected_character = 0
 var pet_state : int = STATE.IDLE

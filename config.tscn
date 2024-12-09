@@ -95,6 +95,14 @@ offset_bottom = 61.0
 text = "Lumin2
 "
 
+[node name="Nebulamemi" type="Button" parent="Window/Control"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 62.0
+offset_right = 181.0
+offset_bottom = 93.0
+text = "Nebulamemi"
+
 [connection signal="pressed" from="Window/Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Window/Control/Bae" to="." method="_on_bae_pressed"]
 [connection signal="pressed" from="Window/Control/Fauna" to="." method="_on_fauna_pressed"]
@@ -105,3 +113,4 @@ text = "Lumin2
 [connection signal="pressed" from="Window/Control/Ywi" to="." method="_on_ywi_pressed"]
 [connection signal="pressed" from="Window/Control/Button2" to="." method="_on_Lumin_pressed"]
 [connection signal="pressed" from="Window/Control/Button3" to="." method="lumin2"]
+[connection signal="pressed" from="Window/Control/Nebulamemi" to="." method="_on_nebulamemi_pressed"]
