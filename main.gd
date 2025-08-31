@@ -25,7 +25,21 @@ var walk_direction: int = 1
 const WALK_SPEED = 150
 
 func _ready():
+	$Config/Window.visible = false
+	var arguments = {}
+	for argument in OS.get_cmdline_args():
+		if argument.contains("="):
+			var key_value = argument.split("=")
+			arguments[key_value[0].trim_prefix("--")] = key_value[1]
+		else:
+			# Options without an argument will be present in the dictionary,
+			# with the value set to an empty string.
+			arguments[argument.trim_prefix("--")] = ""
+	#print_debug(arguments)
+	if arguments.has("dual") and arguments["dual"] == "true":
+		dualscreen = true;
 	if dualscreen:
+		print_debug("Dual Screen");
 		screen_width = DisplayServer.screen_get_usable_rect().size.x * 2
 	get_window().mouse_passthrough_polygon = $Character/Polygon2D.polygon
 	#Change the size of the window
@@ -55,7 +69,7 @@ func _process(delta):
 		emitter.emitting = true
 
 func follow_mouse():
-	#Follows mouse cursor but clamps it on the taskbar
+	#Follows mouse cursor but clamps it on the movetaskbar
 	@warning_ignore("narrowing_conversion")
 	_MainWindow.position = Vector2i(get_global_mouse_position().x
 		 + mouse_offset.x, 
@@ -69,8 +83,10 @@ func move_pet():
 		selected = true
 		mouse_offset = _MainWindow.position - Vector2i(get_global_mouse_position()) 
 	if Input.is_action_just_released("move"):
-		$Config/Window.visible = !$Config/Window.visible
 		selected = false
+	if Input.is_action_just_released("cfg"):
+		$Config/Window.visible = !$Config/Window.visible
+		
 
 func clamp_on_screen_width(pos, player_width):
 	return clampi(pos, 0, screen_width - player_width)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=190 format=3 uid="uid://cm6482er0d1j5"]
 
-[ext_resource type="Script" path="res://character.gd" id="1_cxwx7"]
+[ext_resource type="Script" uid="uid://dwq7mjyedwk4r" path="res://character.gd" id="1_cxwx7"]
 [ext_resource type="Texture2D" uid="uid://c73e5tgtmys3n" path="res://assets/Fox Sprite Sheet.png" id="2_cmvx2"]
 [ext_resource type="Texture2D" uid="uid://cidweciaw56qw" path="res://assets/Baelz/bidle1.png" id="2_hftxk"]
 [ext_resource type="Texture2D" uid="uid://dnl8qi2hwanee" path="res://assets/idle.png" id="2_xsc01"]
@@ -1200,12 +1200,12 @@ one_shot = true
 position = Vector2(32, 32)
 emitting = false
 amount = 5
+texture = ExtResource("3_vp7bq")
 lifetime = 3.0
 one_shot = true
 explosiveness = 0.65
 randomness = 0.25
 lifetime_randomness = 0.5
-texture = ExtResource("3_vp7bq")
 direction = Vector2(0, -1)
 spread = 68.18
 gravity = Vector2(0, 0)
