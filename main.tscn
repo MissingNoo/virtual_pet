@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dawjwx8nckvmm"]
+[gd_scene load_steps=5 format=3 uid="uid://dawjwx8nckvmm"]
 
 [ext_resource type="Script" uid="uid://dfqlywrdsy8pv" path="res://main.gd" id="1_5e0xm"]
 [ext_resource type="PackedScene" uid="uid://cm6482er0d1j5" path="res://character.tscn" id="2_n7kpb"]
 [ext_resource type="PackedScene" uid="uid://dn6ry8t3rkrac" path="res://config.tscn" id="3_0iqeo"]
+[ext_resource type="PackedScene" uid="uid://cedevsen5ghuy" path="res://bowl.tscn" id="4_1bvp3"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_5e0xm")
@@ -12,7 +13,11 @@ scale = Vector2(1, 1)
 
 [node name="Config" parent="." instance=ExtResource("3_0iqeo")]
 
+[node name="Bowl" parent="." instance=ExtResource("4_1bvp3")]
+
 [connection signal="change_character" from="Character" to="." method="_on_character_change_character"]
+[connection signal="climbing" from="Character" to="." method="_on_character_climbing"]
+[connection signal="finished_climbing" from="Character" to="." method="_on_character_finished_climbing"]
 [connection signal="finished_walking" from="Character" to="." method="_on_character_finished_walking"]
 [connection signal="walking" from="Character" to="." method="_on_character_walking"]
 [connection signal="change_character" from="Config" to="." method="_on_config_change_character"]

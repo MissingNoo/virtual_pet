@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var _MainWindow: Window = get_window()
+@onready var bowl: Window = $Config.get_window()
 @onready var char_info: Array = $Character.character_info
 @onready var selected_character: int = $Character.selected_character
 @onready var char_sprite: AnimatedSprite2D = $Character/AnimatedSprite2D
@@ -20,12 +21,19 @@ var first_width: int = DisplayServer.screen_get_usable_rect().size.x
 var dualscreen: bool = false;
 #If true the character will move
 var is_walking: bool = false
+var is_climbing: bool = false
 var walk_direction: int = 1
 #Character walk speed
-const WALK_SPEED = 150
-
+var WALK_SPEED = 150
+var started: bool = false
 func _ready():
 	$Config/Window.visible = false
+	$Bowl/Window.visible = false
+	#$Bowl/Window.hide()
+	#$Bowl/Window.popup_centered(player_size)
+	#bowl.popup_centered(player_size)
+	#bowl.size = player_size
+	#$Bowl/Window.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), DisplayServer.screen_get_size().y/2)
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
 		if argument.contains("="):
@@ -48,21 +56,43 @@ func _ready():
 	#Places the character in the middle of the screen and on top of the taskbar
 	@warning_ignore("integer_division")
 	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), DisplayServer.screen_get_size().y/2)
+	if !started:
+		started = true
+		$Config.change_character.emit(2)
 
 func _process(delta):
+	var state = $Character.pet_state
+	var STATE = $Character.STATE
+	var last_state = $Character.last_state
+	
+	if state == STATE.IDOL:
+		if $Character/AnimatedSprite2D.frame > 11:
+				$Character/AnimatedSprite2D.frame = 9
 	if _MainWindow.position.x > first_width + (player_size.y / 2):
 		taskbar_offset = 0
 	else:
 		taskbar_offset = original_taskbar_offset
 	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
-	if _MainWindow.position.y < taskbar_pos and selected == false:
+	if _MainWindow.position.y < taskbar_pos and selected == false and is_climbing == false:
 		_MainWindow.position.y += gravity
-	if _MainWindow.position.y > taskbar_pos:
+	if _MainWindow.position.y >= taskbar_pos:
+		if state == STATE.FELL:
+			if $Character/AnimatedSprite2D.frame >= 3:
+				$Character/AnimatedSprite2D.play("Bae_idle")
+				$Character.pet_state = STATE.IDLE
+				$Character/Timer.start(1);
+		if last_state == STATE.FALL:
+			$Character.pet_state = STATE.FELL
+			$Character.last_state = STATE.FELL
+			$Character/AnimatedSprite2D.play("Bae_fell")
+			
 		_MainWindow.position.y = taskbar_pos
 	if selected:
 		follow_mouse()
 	if is_walking:
 		walk(delta)
+	if is_climbing:
+		climb(delta)
 	move_pet()
 	#emit heart particles when petted
 	if Input.is_action_just_pressed("pet"):
@@ -90,6 +120,30 @@ func move_pet():
 
 func clamp_on_screen_width(pos, player_width):
 	return clampi(pos, 0, screen_width - player_width)
+var climb_offset = 0
+func climb(delta):
+	var info = $Character.new_character_info.Bae
+	var mx = _MainWindow.position.x
+	if $Character.climb_side == -1:
+		climb_offset = info.climb_offset.left
+	else:
+		climb_offset = info.climb_offset.right
+	var sprite = $Character/AnimatedSprite2D
+	#print_debug($Character.climb_height)
+	if ($Character.climb_side == -1 and mx == 0 - climb_offset) or ($Character.climb_side == 1 and mx == screen_width - climb_offset):
+		if _MainWindow.position.y > $Character.climb_height:
+			sprite.play($Character.character_info[$Character.selected_character][0] + "_climb")
+			_MainWindow.position.y = _MainWindow.position.y - WALK_SPEED * delta
+		else :
+			sprite.stop()
+			#$Character.finished_climbing.emit()
+	
+	walk_direction = $Character.climb_side
+	char_sprite.flip_h = walk_direction == 1
+	#print_debug(_MainWindow.position.x)
+	_MainWindow.position.x = _MainWindow.position.x + WALK_SPEED * delta * walk_direction
+	_MainWindow.position.x = clampi(_MainWindow.position.x, 0 - climb_offset
+			,screen_width - climb_offset)
 
 func walk(delta):
 	#Moves the pet
@@ -136,3 +190,11 @@ func _on_config_change_character(chara):
 	char_sprite.flip_h = info[4]
 	taskbar_pos = (DisplayServer.screen_get_usable_rect().size.y - player_size.y) - taskbar_offset
 	_ready()
+
+
+func _on_character_climbing() -> void:
+	is_climbing = true
+
+
+func _on_character_finished_climbing() -> void:
+	is_climbing = false
