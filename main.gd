@@ -29,6 +29,8 @@ var started: bool = false
 func _ready():
 	$Config/Window.visible = false
 	$Bowl/Window.visible = false
+	$Bowl.taskbar_pos = taskbar_pos
+	$Bowl.gravity = gravity
 	#$Bowl/Window.hide()
 	#$Bowl/Window.popup_centered(player_size)
 	#bowl.popup_centered(player_size)
@@ -58,7 +60,7 @@ func _ready():
 	_MainWindow.position = Vector2i(DisplayServer.screen_get_size().x/2 - (player_size.x/2), DisplayServer.screen_get_size().y/2)
 	if !started:
 		started = true
-		$Config.change_character.emit(2)
+		$Config.change_character.emit(10)
 
 func _process(delta):
 	var state = $Character.pet_state
@@ -68,6 +70,7 @@ func _process(delta):
 	if state == STATE.IDOL:
 		if $Character/AnimatedSprite2D.frame > 11:
 				$Character/AnimatedSprite2D.frame = 9
+	@warning_ignore("integer_division")
 	if _MainWindow.position.x > first_width + (player_size.y / 2):
 		taskbar_offset = 0
 	else:
@@ -89,26 +92,41 @@ func _process(delta):
 		_MainWindow.position.y = taskbar_pos
 	if selected:
 		follow_mouse()
+	if $Character.selected_character == $Character.characters.March or $Character.selected_character == $Character.characters.Teio or $Character.selected_character == $Character.characters.MikuD or $Character.selected_character == $Character.characters.Dog:
+		if _MainWindow.position.x > DisplayServer.screen_get_usable_rect().size.x / 2:
+			$Character/AnimatedSprite2D.flip_h = false
+		else: 
+			$Character/AnimatedSprite2D.flip_h = true
+		$Character/Timer.stop()
 	if is_walking:
 		walk(delta)
 	if is_climbing:
 		climb(delta)
 	move_pet()
 	#emit heart particles when petted
-	if Input.is_action_just_pressed("pet"):
-		emitter.emitting = true
+	#if Input.is_action_just_pressed("pet"):
+		#emitter.emitting = true
 
 func follow_mouse():
+	_MainWindow.position.x = DisplayServer.mouse_get_position().x - 64
+	_MainWindow.position.y = DisplayServer.mouse_get_position().y - 64
 	#Follows mouse cursor but clamps it on the movetaskbar
 	@warning_ignore("narrowing_conversion")
-	_MainWindow.position = Vector2i(get_global_mouse_position().x
-		 + mouse_offset.x, 
-		get_global_mouse_position().y
-		 + mouse_offset.y) 
+	#_MainWindow.position = Vector2i(get_global_mouse_position().x
+#		 + mouse_offset.x, 
+		#get_global_mouse_position().y
+		 #+ mouse_offset.y) 
+		
 
 func move_pet():
 	#On right click and hold it will follow the pet and when released
 	#it will stop following
+	if Input.is_action_just_released("decrease"):
+		$Character.character_info[selected_character][3] -= 0.1;
+		$Config.change_character.emit(selected_character)
+	if Input.is_action_just_released("increase"):
+		$Character.character_info[selected_character][3] += 0.1;
+		$Config.change_character.emit(selected_character)
 	if Input.is_action_pressed("move"):
 		selected = true
 		mouse_offset = _MainWindow.position - Vector2i(get_global_mouse_position()) 

@@ -8,12 +8,12 @@ script = ExtResource("1_kvosb")
 [node name="Window" type="Window" parent="."]
 oversampling_override = 1.0
 initial_position = 1
-size = Vector2i(200, 100)
+size = Vector2i(300, 100)
 
 [node name="Control" type="Control" parent="Window"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 210.0
+offset_right = 293.0
 offset_bottom = 139.0
 
 [node name="Button" type="Button" parent="Window/Control"]
@@ -36,7 +36,7 @@ offset_left = 1.0
 offset_top = 62.0
 offset_right = 57.0
 offset_bottom = 93.0
-text = "Fauna"
+text = "MikuD"
 
 [node name="IRyS" type="Button" parent="Window/Control"]
 layout_mode = 0
@@ -44,6 +44,7 @@ offset_left = 38.0
 offset_top = -1.0
 offset_right = 79.0
 offset_bottom = 30.0
+disabled = true
 text = "IRyS
 "
 
@@ -53,6 +54,7 @@ offset_left = 41.0
 offset_top = 30.0
 offset_right = 103.0
 offset_bottom = 61.0
+disabled = true
 text = "Mumei
 "
 
@@ -62,6 +64,7 @@ offset_left = 59.0
 offset_top = 62.0
 offset_right = 114.0
 offset_bottom = 93.0
+disabled = true
 text = "Kronii"
 
 [node name="Sana" type="Button" parent="Window/Control"]
@@ -70,6 +73,7 @@ offset_left = 77.0
 offset_top = -3.0
 offset_right = 123.0
 offset_bottom = 28.0
+disabled = true
 text = "Sana"
 
 [node name="Ywi" type="Button" parent="Window/Control"]
@@ -78,6 +82,7 @@ offset_left = 105.0
 offset_top = 30.0
 offset_right = 141.0
 offset_bottom = 61.0
+disabled = true
 text = "Ywi"
 
 [node name="Button2" type="Button" parent="Window/Control"]
@@ -85,6 +90,7 @@ layout_mode = 0
 offset_left = 125.0
 offset_right = 182.0
 offset_bottom = 31.0
+disabled = true
 text = "Lumin"
 
 [node name="Button3" type="Button" parent="Window/Control"]
@@ -93,8 +99,7 @@ offset_left = 142.0
 offset_top = 30.0
 offset_right = 199.0
 offset_bottom = 61.0
-text = "Lumin2
-"
+text = "March"
 
 [node name="Nebulamemi" type="Button" parent="Window/Control"]
 layout_mode = 0
@@ -102,7 +107,15 @@ offset_left = 115.0
 offset_top = 62.0
 offset_right = 181.0
 offset_bottom = 93.0
-text = "Nebulamemi"
+text = "Teio"
+
+[node name="Dog" type="Button" parent="Window/Control"]
+layout_mode = 0
+offset_left = 183.0
+offset_top = -1.0
+offset_right = 249.0
+offset_bottom = 30.0
+text = "Dog"
 
 [connection signal="pressed" from="Window/Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Window/Control/Bae" to="." method="_on_bae_pressed"]
@@ -115,3 +128,5 @@ text = "Nebulamemi"
 [connection signal="pressed" from="Window/Control/Button2" to="." method="_on_Lumin_pressed"]
 [connection signal="pressed" from="Window/Control/Button3" to="." method="lumin2"]
 [connection signal="pressed" from="Window/Control/Nebulamemi" to="." method="_on_nebulamemi_pressed"]
+[connection signal="pressed" from="Window/Control/Dog" to="." method="_on_nebulamemi_pressed"]
+[connection signal="pressed" from="Window/Control/Dog" to="." method="_on_dog_pressed"]

@@ -2,15 +2,16 @@ extends Node2D
 
 enum characters {
 	Ywi,
-	Fauna,
+	MikuD,
 	Bae,
 	Mumei,
 	IRyS,
 	Kronii,
 	Sana,
 	Lumin,
-	Lumin2,
-	Nebulamemi,
+	March,
+	Teio,
+	Dog,
 	length
 }
 # Called when the node enters the scene tree for the first time.
@@ -36,7 +37,7 @@ func _on_button_pressed():
 
 
 func _on_fauna_pressed():
-	change_character.emit(1)
+	change_character.emit(characters.MikuD)
 	$Window.visible = false
 
 
@@ -71,10 +72,15 @@ func _on_Lumin_pressed() -> void:
 
 
 func lumin2() -> void:
-	change_character.emit(characters.Lumin2)
+	change_character.emit(characters.March)
 	$Window.visible = false
 
 
 func _on_nebulamemi_pressed() -> void:
-	change_character.emit(characters.Nebulamemi)
+	change_character.emit(characters.Teio)
+	$Window.visible = false
+
+
+func _on_dog_pressed() -> void:
+	change_character.emit(characters.Dog)
 	$Window.visible = false

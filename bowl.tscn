@@ -1,7 +1,22 @@
-[gd_scene format=3 uid="uid://cedevsen5ghuy"]
+[gd_scene load_steps=3 format=3 uid="uid://cedevsen5ghuy"]
+
+[ext_resource type="Texture2D" uid="uid://do4p2we37h5ck" path="res://assets/IRyS/icar1.png" id="1_l4bwr"]
+[ext_resource type="Script" uid="uid://cnfbsvermross" path="res://bowl.gd" id="1_y8sj4"]
 
 [node name="Bowl" type="Node2D"]
+script = ExtResource("1_y8sj4")
 
 [node name="Window" type="Window" parent="."]
 transparent_bg = true
 oversampling_override = 1.0
+unresizable = true
+borderless = true
+always_on_top = true
+transparent = true
+unfocusable = true
+mouse_passthrough = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Window"]
+position = Vector2(51.250004, 35.25)
+scale = Vector2(0.45117188, 0.5214844)
+texture = ExtResource("1_l4bwr")

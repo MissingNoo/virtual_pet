@@ -4,15 +4,16 @@ extends Node2D
 @onready var timer = $Timer
 enum characters {
 	Ywi,
-	Fauna,
+	MikuD,
 	Bae,
 	Mumei,
 	IRyS,
 	Kronii,
 	Sana,
 	Lumin,
-	Lumin2,
-	Nebulamemi,
+	March,
+	Teio,
+	Dog,
 	length
 }
 var new_character_info = {
@@ -31,26 +32,31 @@ var new_character_info = {
 				STATE.SIT
 			],
 		"state_count" : 5
+	},
+	"March" : {
+		
 	}
 }
 
 var character_info = [
 	["Ywi", 32, 32, 3, false, [[7, 14], [27, 15], [7, 32], [27, 32]], false],
-	["Fauna", 128, 128, 1, true, [[16, 0], [112, 0], [16, 128], [112, 128]], false],
+	["MikuD", 720, 662, 0.28, false, [[200, 180], [460, 180], [200, 581], [460, 460]], false],
 	["Bae", 256, 256, 1, true, [[80, 128], [192, 128], [80, 256], [192, 256]], true],
 	["Mumei", 256, 256, 1, true, [[80, 128], [170, 128], [80, 256], [170, 256]], false],
 	["IRyS", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]], false],
 	["Kronii", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]], false],
 	["Sana", 128, 128, 1, true, [[0, 0], [128, 0], [0, 128], [128, 128]], false],
 	["Lumin", 30, 30, 3, false, [[0, 0], [128, 0], [0, 128], [128, 128]], false],
-	["Lumin2", 166, 318, 0.5, true, [[0, 0], [128, 0], [0, 128], [128, 128]], false],
-	["Ymm", 295, 286, 0.3, true, [[0, 81], [255, 80], [0, 285], [255, 285]], false]
+	["March", 512, 441, 0.5, true, [[0, 0], [512, 0], [0, 441], [512, 441]], false],
+	#["Ymm", 295, 286, 0.3, false, [[0, 81], [255, 80], [0, 285], [255, 285]], false]
+	["Teio", 460, 581, 0.5, false, [[200, 180], [460, 180], [200, 581], [460, 460]], false],
+	["Dog", 716, 1067, 0.3, false, [[98, 350], [475, 350], [98, 1066], [475, 1066]], false],
 ]
 var selected_character = 0
 var pet_state : int = STATE.IDLE
 var climb_side = 0
 var last_climb_side = 0
-var climb_height = 0
+var climb_height = 00
 var last_state = 0
 #signals to send when entering and leaving states
 signal walking
@@ -111,12 +117,12 @@ func _on_timer_timeout():
 			sprite.play(character_info[selected_character][0] + "_fall")
 		STATE.WALK :
 			timer.set_wait_time(randi_range(5, 10))
-			get_parent().WALK_SPEED = randi_range(50, 300)
-			if get_parent().WALK_SPEED < 300:
+			get_parent().WALK_SPEED = randi_range(150, 300)
+			if get_parent().WALK_SPEED <= 300:
 				sprite.play(character_info[selected_character][0] + "_sprint")
-			if get_parent().WALK_SPEED < 200:
+			if get_parent().WALK_SPEED <= 250:
 				sprite.play(character_info[selected_character][0] + "_run")
-			if get_parent().WALK_SPEED < 100:
+			if get_parent().WALK_SPEED <= 200:
 				sprite.play(character_info[selected_character][0] + "_walk")
 		STATE.SLEEP :
 			timer.set_wait_time(randi_range(10, 30))
@@ -137,7 +143,7 @@ func _on_timer_timeout():
 		timer.start()
 
 func change_state():
-	var rng = randi_range(0, 5 if selected_character == 3 else 3)
+	var rng = randi_range(0, 5)
 	if pet_state == STATE.CLIMB:
 		var mx = get_parent()._MainWindow.position.x
 		if get_parent()._MainWindow.position.y > climb_height:
